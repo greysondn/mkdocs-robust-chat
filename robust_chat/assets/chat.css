@@ -41,7 +41,13 @@
   cursor: pointer;
   transition: color .15s, border-color .15s, background .15s;
 }
-.rc-commentary-toggle::before { content: "◧ "; opacity: .7; }
+.rc-commentary-toggle::before
+{
+    content: "◧ ";
+    opacity: .7;
+    top: 4px;
+}
+
 .rc-commentary-toggle:hover { color: var(--rc-fg); border-color: var(--rc-accent); }
 .rc-commentary-toggle[aria-pressed="false"] { opacity: .65; }
 
@@ -135,19 +141,42 @@
 
 /* ---- thoughts (foldable) ---- */
 .rc-thoughts {
-  border: 1px solid var(--rc-border);
-  border-radius: var(--rc-radius-sm);
-  background: color-mix(in srgb, var(--rc-bg-alt) 55%, transparent);
-  font-size: 0.9em;
-  max-width: 100%;
+    border: 1px solid var(--rc-border);
+    border-radius: var(--rc-radius-sm);
+    background: color-mix(in srgb, var(--rc-bg-alt) 55%, transparent);
+    font-size: 0.9em;
+    max-width: 100%;
 }
 .rc-thoughts > summary {
-  cursor: pointer; list-style: none;
-  padding: 4px 10px; color: var(--rc-fg-muted);
-  font-weight: 500; user-select: none;
+    cursor: pointer;
+    background-color: none;
+    list-style: none;
+    padding: 4px 10px;
+    color: var(--rc-fg-muted);
+    font-weight: 500;
+    user-select: none;
 }
 .rc-thoughts > summary::-webkit-details-marker { display: none; }
-.rc-thoughts > summary::before { content: "💭 "; }
+
+.rc-thoughts > summary::after
+{
+    top: 4px;
+}
+
+.rc-thoughts > summary::before
+{
+    background: none;
+    content: "💭 ";
+    top: 4px;
+}
+
+.rc-thoughts > summary::
+{
+    background: none;
+    content: "💭 ";
+    top: 4px;
+}
+
 .rc-thoughts[open] > summary { border-bottom: 1px solid var(--rc-border); }
 .rc-thoughts > .rc-body { padding: 8px 12px; }
 
@@ -166,12 +195,27 @@
   display: flex; align-items: center; gap: 6px; user-select: none;
 }
 .rc-tool > summary::-webkit-details-marker { display: none; }
-.rc-tool > summary::before { content: "▸"; transition: transform .12s; }
-.rc-tool[open] > summary::before { transform: rotate(90deg); }
-.rc-tool > summary::after {
-  content: "tool"; margin-left: auto;
-  font-size: 0.75em; letter-spacing: .04em; text-transform: uppercase; opacity: .6;
+
+.rc-tool > summary::after
+{
+    content: "tool";
+    font-size: 0.75em;
+    margin-left: auto;
+    opacity: .6;
+    letter-spacing: .04em;
+    text-transform: uppercase;
+    top: 4px;
 }
+
+.rc-tool > summary::before
+{
+    content: "▸";
+    top: 4px;
+    transition: transform .12s;
+}
+
+.rc-tool[open] > summary::before { transform: rotate(90deg); }
+
 .rc-tool[open] > summary { border-bottom: 1px solid var(--rc-border); }
 .rc-tool > .rc-body { padding: 8px 12px; }
 .rc-tool > .rc-body pre { margin: 0; }
