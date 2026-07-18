@@ -6,6 +6,10 @@ Outside this disclosure, changes made by humans are properly credited.
 
 Do as you wish with that information.
 
+## Contributing
+
+Please don't. You're welcome to fork it, though - it's MIT for a reason. Just don't forget a lot of people want to know if it's AI-generated code.
+
 # mkdocs-robust-chat
 
 Render ` ```chat ` code blocks as modern chat threads in **mkdocs-material** — system
