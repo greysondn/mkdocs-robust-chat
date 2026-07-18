@@ -1,6 +1,7 @@
 # v0.1.2
 
 * Fix up css styling in mkdocs-material... hopefully.
+* resolve root-relative avatar/attachment/link paths
 
 # v0.1.1
 

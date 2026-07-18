@@ -44,6 +44,13 @@ class RobustChatPlugin(BasePlugin):
         )
         return config
 
+    def on_page_markdown(self, markdown, page, config, files):
+        # Lets format_chat resolve avatar/attachment/link_to paths that start with "/"
+        # as relative to the docs root, rewritten correctly for this page's depth —
+        # raw HTML from the fence otherwise bypasses mkdocs' own link rewriting.
+        superfence.set_current_page_url(page.url)
+        return markdown
+
     def on_post_build(self, config):
         if not self.config["copy_assets"]:
             return
