@@ -1,0 +1,232 @@
+/* Robust Chat — shared stylesheet.
+   Identical file ships in both the Obsidian plugin and the mkdocs-material plugin.
+   Colors inherit the host theme (Obsidian vars first, Material vars next, then a
+   hard fallback) so the block blends into whatever site/vault it lives in. */
+
+.rc-chat {
+  /* theme bridge: Obsidian  ->  Material  ->  literal fallback */
+  --rc-bg:        var(--background-primary,            var(--md-default-bg-color, #ffffff));
+  --rc-bg-alt:    var(--background-secondary,          var(--md-code-bg-color, #f4f4f5));
+  --rc-border:    var(--background-modifier-border,    var(--md-default-fg-color--lightest, #e2e2e6));
+  --rc-fg:        var(--text-normal,                   var(--md-default-fg-color, #1b1b1f));
+  --rc-fg-muted:  var(--text-muted,                    var(--md-default-fg-color--light, #6b6b70));
+  --rc-accent:    var(--interactive-accent,            var(--md-accent-fg-color, #4a7dff));
+  --rc-radius:    16px;
+  --rc-radius-sm: 8px;
+  --rc-gap:       14px;
+  --rc-commentary-width: clamp(200px, 26%, 320px);
+  --rc-avatar:    38px;
+
+  display: block;
+  margin: 1.2em 0;
+  color: var(--rc-fg);
+  font-size: 0.95em;
+  line-height: 1.5;
+}
+
+/* ---- toolbar (commentary toggle) ---- */
+.rc-toolbar {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 6px;
+}
+.rc-commentary-toggle {
+  font: inherit;
+  font-size: 0.8em;
+  color: var(--rc-fg-muted);
+  background: transparent;
+  border: 1px solid var(--rc-border);
+  border-radius: 999px;
+  padding: 2px 12px;
+  cursor: pointer;
+  transition: color .15s, border-color .15s, background .15s;
+}
+.rc-commentary-toggle::before { content: "◧ "; opacity: .7; }
+.rc-commentary-toggle:hover { color: var(--rc-fg); border-color: var(--rc-accent); }
+.rc-commentary-toggle[aria-pressed="false"] { opacity: .65; }
+
+/* ---- thread + per-row grid ---- */
+.rc-thread { display: flex; flex-direction: column; gap: var(--rc-gap); }
+
+.rc-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) var(--rc-commentary-width);
+  gap: 18px;
+  align-items: start;
+}
+.rc-chat[data-commentary="collapsed"] .rc-row {
+  grid-template-columns: minmax(0, 1fr) 0px;
+}
+.rc-chat[data-commentary="collapsed"] .rc-commentary {
+  opacity: 0; pointer-events: none; overflow: hidden;
+}
+/* a row that carries no commentary still reserves the column so bubbles stay aligned */
+.rc-commentary:empty { visibility: hidden; }
+
+/* ---- message ---- */
+.rc-msg {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  min-width: 0;
+}
+.rc-msg--right { flex-direction: row-reverse; }
+
+.rc-avatar {
+  flex: 0 0 var(--rc-avatar);
+  width: var(--rc-avatar);
+  height: var(--rc-avatar);
+  border-radius: 50%;
+  overflow: hidden;
+  background: var(--rc-bg-alt);
+  border: 1px solid var(--rc-border);
+  display: grid;
+  place-items: center;
+  text-decoration: none;
+  color: var(--rc-fg-muted);
+  font-size: 0.9em;
+  margin-top: 20px; /* drop the avatar to sit beside the bubble, not the name */
+}
+.rc-avatar img { width: 100%; height: 100%; object-fit: cover; }
+
+.rc-col { min-width: 0; display: flex; flex-direction: column; gap: 6px; max-width: 82%; }
+.rc-msg--right .rc-col { align-items: flex-end; }
+
+.rc-meta {
+  display: flex; gap: 8px; align-items: baseline;
+  font-size: 0.8em; color: var(--rc-fg-muted); padding: 0 4px;
+}
+.rc-msg--right .rc-meta { flex-direction: row-reverse; }
+.rc-name { color: var(--rc-fg); font-weight: 600; text-decoration: none; }
+.rc-name:hover { color: var(--rc-accent); text-decoration: underline; }
+.rc-date { font-variant-numeric: tabular-nums; }
+
+/* ---- bubble ---- */
+.rc-bubble {
+  background: var(--rc-bg-alt);
+  border: 1px solid var(--rc-border);
+  border-radius: var(--rc-radius);
+  padding: 8px 13px;
+  min-height: 1.9em;                /* an empty (user-only) message still shows a box */
+  width: fit-content;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+.rc-msg--left  .rc-bubble { border-top-left-radius: var(--rc-radius-sm); }
+.rc-msg--right .rc-bubble { border-top-right-radius: var(--rc-radius-sm); }
+
+.rc-body > :first-child { margin-top: 0; }
+.rc-body > :last-child { margin-bottom: 0; }
+.rc-body pre { overflow-x: auto; }
+
+/* ---- system message ---- */
+.rc-row--system { grid-template-columns: minmax(0, 1fr) var(--rc-commentary-width); }
+.rc-msg--system { justify-content: center; }
+.rc-msg--system .rc-bubble {
+  background: transparent;
+  border: 1px dashed var(--rc-border);
+  border-radius: var(--rc-radius-sm);
+  color: var(--rc-fg-muted);
+  font-size: 0.9em;
+  text-align: center;
+  margin: 0 auto;
+  max-width: 80%;
+}
+
+/* ---- thoughts (foldable) ---- */
+.rc-thoughts {
+  border: 1px solid var(--rc-border);
+  border-radius: var(--rc-radius-sm);
+  background: color-mix(in srgb, var(--rc-bg-alt) 55%, transparent);
+  font-size: 0.9em;
+  max-width: 100%;
+}
+.rc-thoughts > summary {
+  cursor: pointer; list-style: none;
+  padding: 4px 10px; color: var(--rc-fg-muted);
+  font-weight: 500; user-select: none;
+}
+.rc-thoughts > summary::-webkit-details-marker { display: none; }
+.rc-thoughts > summary::before { content: "💭 "; }
+.rc-thoughts[open] > summary { border-bottom: 1px solid var(--rc-border); }
+.rc-thoughts > .rc-body { padding: 8px 12px; }
+
+/* ---- tool call (foldable, folded by default) ---- */
+.rc-tool {
+  border: 1px solid var(--rc-border);
+  border-radius: var(--rc-radius-sm);
+  background: var(--rc-bg);
+  margin: 8px 0;
+  font-size: 0.94em;
+}
+.rc-tool > summary {
+  cursor: pointer; list-style: none;
+  padding: 5px 10px; color: var(--rc-fg-muted);
+  font-family: var(--font-monospace, ui-monospace, monospace);
+  display: flex; align-items: center; gap: 6px; user-select: none;
+}
+.rc-tool > summary::-webkit-details-marker { display: none; }
+.rc-tool > summary::before { content: "▸"; transition: transform .12s; }
+.rc-tool[open] > summary::before { transform: rotate(90deg); }
+.rc-tool > summary::after {
+  content: "tool"; margin-left: auto;
+  font-size: 0.75em; letter-spacing: .04em; text-transform: uppercase; opacity: .6;
+}
+.rc-tool[open] > summary { border-bottom: 1px solid var(--rc-border); }
+.rc-tool > .rc-body { padding: 8px 12px; }
+.rc-tool > .rc-body pre { margin: 0; }
+
+/* ---- attachments ---- */
+.rc-attachments {
+  display: flex; flex-wrap: wrap; gap: 8px; margin: 2px 0;
+}
+.rc-msg--right .rc-attachments { justify-content: flex-end; }
+.rc-attach {
+  display: flex; align-items: center; gap: 8px;
+  border: 1px solid var(--rc-border);
+  border-radius: var(--rc-radius-sm);
+  background: var(--rc-bg);
+  padding: 6px 10px 6px 6px;
+  max-width: 220px;
+  text-decoration: none; color: var(--rc-fg);
+  font-size: 0.82em;
+}
+.rc-attach:hover { border-color: var(--rc-accent); }
+.rc-attach--image { padding: 0; overflow: hidden; }
+.rc-attach--image img {
+  display: block; width: 120px; height: 84px; object-fit: cover;
+}
+.rc-attach-icon {
+  flex: 0 0 auto; width: 30px; height: 30px; border-radius: 6px;
+  display: grid; place-items: center;
+  background: var(--rc-bg-alt); color: var(--rc-fg-muted);
+  font-size: 0.62em; font-weight: 700; letter-spacing: .03em; text-transform: uppercase;
+}
+.rc-attach-name { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+/* ---- commentary column ---- */
+.rc-commentary { display: flex; flex-direction: column; gap: 8px; transition: opacity .15s; }
+.rc-comment {
+  border-left: 2px solid var(--rc-border);
+  padding: 2px 0 2px 10px;
+  font-size: 0.85em;
+  color: var(--rc-fg-muted);
+}
+.rc-commenter { font-weight: 600; color: var(--rc-fg); font-size: 0.92em; margin-bottom: 2px; }
+.rc-comment .rc-body > :first-child { margin-top: 0; }
+.rc-comment .rc-body > :last-child { margin-bottom: 0; }
+
+/* ---- responsive: fold commentary under, or hide when toggled ---- */
+@media (max-width: 720px) {
+  .rc-row { grid-template-columns: 1fr; }
+  .rc-chat[data-commentary="collapsed"] .rc-row { grid-template-columns: 1fr; }
+  .rc-commentary {
+    border-top: 1px dashed var(--rc-border);
+    padding-top: 8px; margin-left: calc(var(--rc-avatar) + 10px);
+  }
+  .rc-col { max-width: 100%; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rc-commentary, .rc-tool > summary::before, .rc-commentary-toggle { transition: none; }
+}
