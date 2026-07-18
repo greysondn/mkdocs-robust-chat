@@ -61,10 +61,10 @@
   align-items: start;
 }
 .rc-chat[data-commentary="collapsed"] .rc-row {
-  grid-template-columns: minmax(0, 1fr) 0px;
+  grid-template-columns: minmax(0, 1fr);
 }
 .rc-chat[data-commentary="collapsed"] .rc-commentary {
-  opacity: 0; pointer-events: none; overflow: hidden;
+  display: none;
 }
 /* a row that carries no commentary still reserves the column so bubbles stay aligned */
 .rc-commentary:empty { visibility: hidden; }
