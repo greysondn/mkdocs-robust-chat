@@ -9,7 +9,7 @@ description = "Render chat code blocks as modern chat threads in mkdocs-material
 readme = "README.md"
 requires-python = ">=3.8"
 license = {file = "LICENSE.md"}
-authors = [{ name = "Useless Allure" }]
+authors = [{ name = "greysondn" }]
 keywords = ["mkdocs", "mkdocs-plugin", "mkdocs-material", "chat", "superfences", "ai-generated", "llm-generated-code"]
 dependencies = [
     "mkdocs>=1.4",
