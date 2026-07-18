@@ -170,13 +170,6 @@
     top: 4px;
 }
 
-.rc-thoughts > summary::
-{
-    background: none;
-    content: "💭 ";
-    top: 4px;
-}
-
 .rc-thoughts[open] > summary { border-bottom: 1px solid var(--rc-border); }
 .rc-thoughts > .rc-body { padding: 8px 12px; }
 
